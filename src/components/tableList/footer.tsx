@@ -4,6 +4,7 @@ import {  GrAddCircle   } from 'react-icons/gr';
 import {  BiSearchAlt  } from 'react-icons/bi';
 import {   AiOutlinePercentage } from 'react-icons/ai';
 
+import './footer.css';
 
 class Footer extends Component {
     async componentDidMount() {

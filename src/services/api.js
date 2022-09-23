@@ -8,4 +8,5 @@ api.interceptors.request.use(async config =>{
     config.headers.get ={'Content-Type' :'application/json'};
     return config;
 } )
+
   export default api;

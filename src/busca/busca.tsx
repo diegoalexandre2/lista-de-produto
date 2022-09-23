@@ -8,54 +8,34 @@ import Container from 'react-bootstrap/Container';
 
 class Busca extends Component {
 
-    async componentDidMount() {
-        window.scrollTo(0,0)
-    }
-        render(){
-                return (
-             <>
-                <Container fluid>             
-                    <Form>
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <div className="row">
-                                        <div className="col-md-2">
-                                            <Form.Label></Form.Label>
-                                        </div>
-                                        <div className="col">
-                                            <Form.Control placeholder= "codigo" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4">
-                                    <div className="row">
-                                        <div className="col-md-2">
-                                            <Form.Label></Form.Label>
-                                        </div>
-                                        <div className="col">
-                                        <Form.Control placeholder= "Item" />
-                                        </div>
-                                    </div>
-                                </div>
-                                    <div className="col-md-4">
-                                
-                                <div className="col-md-4">
-                                    <div className="row">
-                                        <div className="col-md-2">
-                                            <Form.Label></Form.Label>
-                                        </div>
-                                        <div className="col">
-                                        <Form.Control placeholder= "Item" />
-                                        </div>
-                                    </div>
-                                </div>      
-                                </div>
-                            </div>  
-                    </Form>          
-                </Container>
-         </>
+  
+ render(){
+    return (
+      <>
+                
+     <Form>
+        <div className="conteudo">  
+            <div>
+                <div className="row">
+                    <div className="col-md-4">
+                       <Form.Control placeholder= "codigo" />
+                   </div>
+                    <div className="col-md-8">
+                        <Form.Control placeholder= "Item" />
+                    </div>
+                 </div>
+            </div> 
+            <div>
+                <div className="col-md-4">
+                    <Form.Control placeholder= "%" />
+                </div>
+            </div>
+        </div>
+    </Form> 
+              
+   </>
 
-                )
-            }
+  )
+  }
 }
 export default Busca;

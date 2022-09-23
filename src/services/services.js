@@ -13,12 +13,16 @@ export const Produtos = async () =>{
     return produtos;
 }
 export const Logar = async (e) =>{
-    var logar = {};
-    console.log(e)
+    var logar = [];
+    
     try{
-        const resp = await api.get("/usuario");
+        const resp = await api.get("/usuario", {params: e});
+       
+            logar = resp.data
+      
 
     }catch(erro){
         console.log("erro")
     }
+    return logar;
 }
