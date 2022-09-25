@@ -4,7 +4,7 @@ import Busca from "../../busca/busca";
 
 //components
 import TableList from "../../components/tableList/tableList";
-import Footer from "../../components/tableList/footer";
+
 
 //bootstrap
 import Form from 'react-bootstrap/Form';
@@ -21,6 +21,7 @@ class Home extends Component {
       email : '',
       senha : '',
       error : '',
+      logado : false,
     };
     
             
@@ -46,6 +47,7 @@ class Home extends Component {
             return    
           }
           sessionStorage.setItem('login',JSON.stringify(login[0]));
+          this.setState({logado:true})
       };
       
     render() {
@@ -71,6 +73,7 @@ class Home extends Component {
                                 <div className="col">
                                     <Form.Control type="email" placeholder= "user@gmail.com"
                                        onChange={e => this.setState({ email: e.target.value })} 
+                                       disabled={this.state.logado}
                                      />
                                 </div>
                             </div>
@@ -83,12 +86,13 @@ class Home extends Component {
                                 <div className="col">
                                 <Form.Control type="password" placeholder= "******" 
                                  onChange={e => this.setState({ senha: e.target.value })} 
+                                 disabled={this.state.logado}
                                 />
                                 </div>
                             </div>
                         </div>
                         <div className="col-md-4">
-                            <Button variant="primary" type="submit">
+                            <Button variant="primary" type="submit"  disabled={this.state.logado} >
                                 Login
                             </Button>
                         </div>
@@ -98,7 +102,7 @@ class Home extends Component {
                 <TableList/>
              </Container>
              <Busca/>
-             <Footer/>
+           
             </>
         )
     }

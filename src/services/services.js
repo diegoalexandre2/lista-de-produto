@@ -12,6 +12,18 @@ export const Produtos = async () =>{
     }
     return produtos;
 }
+export const setProdutos = async (e) =>{
+    debugger
+    const produto = e.produto
+    console.log(e)
+    try { 
+        const resp = await api.post("/produtos", produto); 
+        return resp.data
+    }catch(erro){
+        console.log("erro")
+    }
+}
+
 export const Logar = async (e) =>{
     var logar = [];
     

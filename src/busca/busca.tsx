@@ -4,8 +4,6 @@ import React, { Component } from "react";
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 
-
-
 class Busca extends Component {
 
   
@@ -13,8 +11,8 @@ class Busca extends Component {
     return (
       <>
                 
-     <Form>
-        <div className="conteudo">  
+     <Form className="conteudo">
+        <div className="cardbusca">  
             <div>
                 <div className="row">
                     <div className="col-md-4">

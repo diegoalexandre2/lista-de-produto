@@ -1,10 +1,11 @@
 import React from "react";
 import { Component } from "react";
-import {  GrAddCircle   } from 'react-icons/gr';
+
+
 import {  BiSearchAlt  } from 'react-icons/bi';
 import {   AiOutlinePercentage } from 'react-icons/ai';
-
 import './footer.css';
+import { Button } from "react-bootstrap";
 
 class Footer extends Component {
     async componentDidMount() {
@@ -13,9 +14,7 @@ class Footer extends Component {
         render(){
             return(
                 <>
-                 <div> 
-                      <h3>< GrAddCircle /> </h3>
-                  </div> 
+              
                 <div> 
                         <h3>< BiSearchAlt  /> </h3>
                 </div>   

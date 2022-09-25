@@ -1,5 +1,8 @@
 .conteudo{
-    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+.cardbusca{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
