@@ -7,10 +7,30 @@ import { Button } from "react-bootstrap";
 import { BiSearchAlt } from "react-icons/bi";
 import { AiOutlinePercentage } from "react-icons/ai";
 
-class Busca extends Component {
-
-  
+interface Props {
+    id: string, 
+    descricao: string,
+    porcentagem: number,
+    onChange? : any
+    filterDescricao?: any,
+    filterId?: any,
+}
+class Busca extends Component<Props> {
+   constructor(props: Props){
+    super(props)
+    this.state = {...props, logado: false}
+    //this.filterDescricao = this.filterDescricao.bind(this)
+   }
+   static getDerivedStateFromProps(props: any, state: any){
+    return {...props}
+   }
+  async componentDidMount() {
+     if( sessionStorage.getItem('login') != null) {this.setState({logado: true})}
+  }
+ 
  render(){
+    const dados:any = this.state
+
     return (
       <>
                 
@@ -19,10 +39,10 @@ class Busca extends Component {
             <div>
                 <div className="row">
                     <div className="col-md-4">
-                       <Form.Control placeholder= "codigo" />
+                       <Form.Control placeholder= "codigo" value={dados.id} onChange={dados.filterId.bind(this)}/>
                    </div>
                     <div className="col-md-6">
-                        <Form.Control placeholder= "Item" />
+                        <Form.Control placeholder= "Item" value={dados.descricao} onChange={dados.filterDescricao.bind(this)}/>
                     </div>
                  </div>
             </div> 
@@ -31,16 +51,20 @@ class Busca extends Component {
                <  BiSearchAlt  /> 
               </Button>
         </div> 
-            <div>
-                <div className="col-md-3">
-                    <Form.Control placeholder= "%" />
+        {
+           dados.logado ? (
+            <div className="row">
+                <div className="col-md-4">
+                    <Form.Control type="number" value={dados.porcentagem} onChange={dados.onChange.bind(this)}/>
                 </div>
-        <div className="valor"> 
-              <Button type="submit" data-bs-toggle="modal" data-bs-target="#addModal">
-               <  AiOutlinePercentage /> 
-              </Button>
-        </div> 
+                <div className="col-md-4"> 
+                    <Button type="submit" data-bs-toggle="modal" data-bs-target="#addModal">
+                        <AiOutlinePercentage /> 
+                    </Button>
+                </div> 
             </div>
+           )  : null
+        }
         </div>
     </Form> 
               
@@ -51,6 +75,4 @@ class Busca extends Component {
 }
 export default Busca;
 
-function async() {
-    throw new Error("Function not implemented.");
-}
+

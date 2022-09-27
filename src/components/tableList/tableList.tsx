@@ -8,12 +8,22 @@ import {  GrAddCircle   } from 'react-icons/gr';
 import Modal from 'react-bootstrap/Modal';
 import { date } from "yup";
 
-class TableList extends Component {
-  constructor(props: any) {
+interface Props {
+  porcentagem: number,
+  id?: number,
+  descricao?: string
+}
+class TableList extends Component<Props, any> {
+  constructor(props: Props) {
     super(props);
-    this.state = {
+    this.state = { 
+      porcentagem: props.porcentagem,
+      id: props.id,
+      descricao: props.descricao,
       produtos : [],
+      produtosFiltrados : [],
       show: false,
+      logado: false,
       produto:{
         descricao: '',
         precoCusto: 0.00,
@@ -27,26 +37,64 @@ class TableList extends Component {
     this.handleSetValor = this.handleSetValor.bind(this);
     this.handleSalva = this.handleSalva.bind(this);
   }
+  static getDerivedStateFromProps(props: any, state: any){
+    return {...props}
+  }
+
     async componentDidMount() {
        const listProdutos = await Produtos();
+     if( sessionStorage.getItem('login') != null) {this.setState({logado: true})}
+
        this.setState({
         produtos : [...listProdutos]
        })
-       
+       console.log(this .state)
+    }
+
+    async componentDidUpdate(){
+      console.log('teste')
+      this.filter()
     }
 
     async handleClose () {
-      this.setState((state) => ({
+      this.setState({
         show: false
-      }));
+      });
     }
 
     async handleShow(){
-      this.setState((state) => ({
+      this.setState({
         show: true
-      }));
+      });
     }
 
+    async filter(){
+      let prd = this.state.produtos;
+      let prdFilter: any = [];
+
+      if(this.state.id != '' ){
+        prdFilter = prd.filter((p: any) => p.id == this.state.id);
+        this.setState({
+          produtosFiltrados: [...prdFilter]
+        })
+        return
+      }else {
+        this.setState({
+          produtosFiltrados: [...prd]
+        })
+      }
+
+      if(this.state.descricao != '' ){
+        prdFilter = prd.filter((p: any) => p.descricao.includes(this.state.descricao));
+        this.setState({
+          produtosFiltrados: [...prdFilter]
+        })
+      }else {
+        this.setState({
+          produtosFiltrados: [...prd]
+        })
+      }
+    }
     async handleSetDesc(e:any){
       const prd = this.state;
       this.setState({
@@ -93,7 +141,7 @@ class TableList extends Component {
       const handleValor = (event: any) => {
         var prd = {
           descricao:  dados.produto.descricao,
-          precoCusto: event.target.precoCusto
+          precoCusto: event.target.value,
         }
         event.preventDefault();
         this.handleSetValor(prd)
@@ -110,30 +158,35 @@ class TableList extends Component {
                 </tr>
               </thead>
               <tbody>
-                {
-                  dados.produtos.map((i: any, key: any) =>(
-                    <tr key={key}>
-                      <td>{i.id}</td>
-                      <td>{i.descricao}</td>
-                      <td>${i.precoCusto}</td>
-                      <td>{i.dataAtualizacao}</td>
-                    </tr>
-                  ))
+                { 
+
+                    dados.produtosFiltrados.map((i: any, key: any) => (
+                        <tr key={key}>
+                          <td>{i.id}</td>
+                          <td>{i.descricao}</td>
+                          <td>${i.precoCusto + (i.precoCusto * dados.porcentagem) / 100}</td>
+                          <td>{i.dataAtualizacao}</td>
+                        </tr>
+                      ))
+                    
                 }
               
               </tbody>
             </Table>
-            <div className="adicionar"> 
-              <Button type="submit" data-bs-toggle="modal" data-bs-target="#addModal"  onClick={this.handleShow}>
-                < GrAddCircle /> 
-              </Button>
-            </div> 
-
-            <Modal show={dados.show} onHide={this.handleClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>Adicionar Produto</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
+            {
+              dados.logado ? (
+                <div className="adicionar"> 
+                  <Button type="submit" data-bs-toggle="modal" data-bs-target="#addModal"  onClick={this.handleShow}>
+                    < GrAddCircle /> 
+                  </Button>
+                </div> 
+              ): null
+            }
+                    <Modal show={dados.show} onHide={this.handleClose}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Adicionar Produto</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
                 <Form>
                   <div className="row">
                     <div className="col-md-6">

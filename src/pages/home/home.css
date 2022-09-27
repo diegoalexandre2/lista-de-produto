@@ -7,6 +7,19 @@ form{
 .erro{
     position: absolute !important;
     right: 0;
-    
-
+}
+.conteudo{
+    position: absolute;
+    bottom: 0;
+}
+.cardbusca{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.search{
+    position: absolute;
+    bottom: 7px;
+    left:28%;
+    cursor: pointer
 }

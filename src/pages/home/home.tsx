@@ -16,53 +16,94 @@ import './home.css';
 
 
 
-class Home extends Component {
-    state = {
-      email : '',
-      senha : '',
-      error : '',
-      logado : false,
-    };
-    
-            
-      handleSignIn = async ( e: { preventDefault: () => void; } ) => {
-        e.preventDefault();
-            
-        const { email, senha } = this.state;
-       
-        if (!email || !senha) {
-            this.setState({ error: "Preencha e-mail e senha para continuar!" });
-            setTimeout(()=>{
-                this.setState({ error: "" });
-            },3000)
-            return;
+class Home extends Component<any, any> {
+    constructor(props: any){
+        super(props);
+
+        this.state = {
+          email : '',
+          senha : '',
+          error : '',
+          logado : false,
+          porcentagem : 7,
+          id: '',
+          descriçao: ''
         }
-        const login = await Logar({email,senha});
-            console.log(login)
-          if(login.length == 0){
-            this.setState({error: "usuario nao encontrado!"})
-            setTimeout(()=>{
-                this.setState({ error: "" });
-            },3000)
-            return    
-          }
-          sessionStorage.setItem('login',JSON.stringify(login[0]));
-          this.setState({logado:true})
-      };
-      
-    render() {
+        this.handleSetPorcent = this.handleSetPorcent.bind(this);
+
+    }
+
+    async componentDidMount(){
+        window.scrollTo(0,0);
+    }
+
+    handleSignIn = async ( e: { preventDefault: () => void; } ) => {
+    e.preventDefault();
+    const st: any = this.state;
         
+    const email = st.email; 
+    const senha = st.senha;
+    
+    if (!email || !senha) {
+        this.setState({ error: "Preencha e-mail e senha para continuar!" });
+        setTimeout(()=>{
+            this.setState({ error: "" });
+        },3000)
+        return;
+    }
+    const login = await Logar({email,senha});
+        console.log(login)
+        if(login.length == 0){
+        this.setState({error: "usuario nao encontrado!"})
+        setTimeout(()=>{
+            this.setState({ error: "" });
+        },3000)
+        return    
+        }
+        sessionStorage.setItem('login',JSON.stringify(login[0]));
+        this.setState({logado:true})
+    };
+
+    handleSetPorcent(e: number){
+        this.setState(({
+            porcentagem: e
+        }));
+    }
+    handleId(e: any){
+        this.setState(({
+            id: e
+        }));
+    }
+    handleDescricao(e: any){
+        this.setState(({
+            descriçao: e
+        }));
+    }
+    render() {
+        const dados: any = this.state;
+        const handlePorncent = (event: any) => {
+            event.preventDefault();
+            this.handleSetPorcent(event.target.value)
+        }
+        const handleId = (event: any) => {
+            event.preventDefault();
+            this.handleId(event.target.value)
+        }
+        const handleDescricao = (event: any) => {
+            event.preventDefault();
+            this.handleDescricao(event.target.value)
+        }
         return(
             <>
             <Container fluid> 
             {
-                this.state.error != '' ? (
+                dados.error != '' ? (
                     <div className="alert alert-danger alert-dismissible fade show erro" role="alert">
-                        {this.state.error}
+                        {dados.error}
                     </div>            
                 ):null
             }
-             {this.state.error}
+             {dados.error}
                <Form onSubmit={this.handleSignIn}>
                     <div className="row">
                         <div className="col-md-4">
@@ -73,7 +114,7 @@ class Home extends Component {
                                 <div className="col">
                                     <Form.Control type="email" placeholder= "user@gmail.com"
                                        onChange={e => this.setState({ email: e.target.value })} 
-                                       disabled={this.state.logado}
+                                       disabled={dados.logado}
                                      />
                                 </div>
                             </div>
@@ -86,23 +127,22 @@ class Home extends Component {
                                 <div className="col">
                                 <Form.Control type="password" placeholder= "******" 
                                  onChange={e => this.setState({ senha: e.target.value })} 
-                                 disabled={this.state.logado}
+                                 disabled={dados.logado}
                                 />
                                 </div>
                             </div>
                         </div>
                         <div className="col-md-4">
-                            <Button variant="primary" type="submit"  disabled={this.state.logado} >
+                            <Button variant="primary" type="submit"  disabled={dados.logado} >
                                 Login
                             </Button>
                         </div>
                     </div>
                     
                 </Form>
-                <TableList/>
+                <TableList porcentagem={this.state.porcentagem} id={dados.id} descricao={dados.descriçao} />
              </Container>
-             <Busca/>
-           
+             <Busca porcentagem={this.state.porcentagem} id={dados.id} descricao={dados.descriçao} onChange={handlePorncent} filterDescricao={handleDescricao} filterId={handleId}/>
             </>
         )
     }
